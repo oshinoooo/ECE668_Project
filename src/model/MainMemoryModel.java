@@ -20,20 +20,43 @@ public class MainMemoryModel {
 
         m_inst.add("lod 000");
         m_inst.add("lod 001");
+        m_inst.add("add");
+        m_inst.add("add");
+
+        m_inst.add("sub");
         m_inst.add("lod 002");
         m_inst.add("lod 003");
         m_inst.add("lod 004");
+
+        m_inst.add("sub");
         m_inst.add("str 005");
         m_inst.add("str 006");
+        m_inst.add("div");
+
+        m_inst.add("mul");
         m_inst.add("str 007");
         m_inst.add("str 008");
         m_inst.add("str 009");
-        m_inst.add("bne 000");
+
+        m_inst.add("add");
         m_inst.add("lod 010");
         m_inst.add("lod 011");
+        m_inst.add("mul");
+
+        m_inst.add("div");
+        m_inst.add("mul");
         m_inst.add("lod 012");
         m_inst.add("lod 013");
+
+        m_inst.add("div");
         m_inst.add("lod 014");
+        m_inst.add("str 015");
+        m_inst.add("add");
+
+        m_inst.add("bne 000");
+        m_inst.add("lod 000");
+        m_inst.add("lod 000");
+        m_inst.add("lod 000");
     }
 
     public ArrayList<String> loadData(int address, int block_size) {

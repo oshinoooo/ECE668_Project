@@ -18,11 +18,16 @@ public class CacheBoardView {
     private JTable m_table;
 
     private JPanel m_info;
-    private JTextArea m_label;
 
-    private JPanel m_status;
+    // left
+    private JPanel m_left_info;
+    private JTextArea m_label;
     private JTextArea m_ifHit;
+
+    // right
+    private JPanel m_right_info;
     private JTextArea m_miss_count;
+    private JTextArea m_total;
     private JTextArea m_miss_rate;
 
     Vector<String> m_column;
@@ -50,19 +55,27 @@ public class CacheBoardView {
         m_table.setDefaultRenderer(Object.class, cr);
         m_table.getTableHeader().setDefaultRenderer(cr);
 
+        // info
         m_info = new JPanel(new FlowLayout());
+
+        // left
+        m_left_info = new JPanel(new BorderLayout());
         m_label = new JTextArea(boardName);
-
-        m_status = new JPanel(new BorderLayout());
         m_ifHit = new JTextArea("Miss/Hit");
-        m_miss_count = new JTextArea("Miss Count: 0");
-        m_miss_rate = new JTextArea("Miss Rate: 0");
-        m_status.add(m_ifHit, BorderLayout.NORTH);
-        m_status.add(m_miss_count, BorderLayout.CENTER);
-        m_status.add(m_miss_rate, BorderLayout.SOUTH);
+        m_left_info.add(m_label, BorderLayout.NORTH);
+        m_left_info.add(m_ifHit, BorderLayout.SOUTH);
 
-        m_info.add(m_label);
-        m_info.add(m_status);
+        // right
+        m_right_info = new JPanel(new BorderLayout());
+        m_miss_count = new JTextArea("Miss Count: 0");
+        m_total      = new JTextArea("Total          : 0");
+        m_miss_rate  = new JTextArea("Miss Rate   : 0.000");
+        m_right_info.add(m_miss_count, BorderLayout.NORTH);
+        m_right_info.add(m_total, BorderLayout.CENTER);
+        m_right_info.add(m_miss_rate, BorderLayout.SOUTH);
+
+        m_info.add(m_left_info);
+        m_info.add(m_right_info);
 
         m_cache_board.add(m_table.getTableHeader(), BorderLayout.NORTH);
         m_cache_board.add(m_table, BorderLayout.CENTER);
@@ -87,8 +100,21 @@ public class CacheBoardView {
         // miss count
         m_miss_count.setText("Miss Count: " + tmp_status.getM_miss_count());
 
+        // total
+        m_total.setText("Total          : " + tmp_status.getM_total_count());
+
         // miss rate
-        m_miss_rate.setText("Miss Rate: " + tmp_status.getM_miss_rate());
+        String miss_rate_str = Double.toString(tmp_status.getM_miss_rate());
+        int length = miss_rate_str.length();
+        if (5 < length) {
+            miss_rate_str = miss_rate_str.substring(0, 5);
+        }
+        else if (length < 5) {
+            for (int i = 0; i < 5 - length; i++) {
+                miss_rate_str += "0";
+            }
+        }
+        m_miss_rate.setText("Miss Rate   : " + miss_rate_str);
 
         // table
         int cache_size = m_cacheSimulatorSystem.getM_cache_size();
@@ -122,7 +148,8 @@ public class CacheBoardView {
 
         m_ifHit.setText("Miss/Hit");
         m_miss_count.setText("Miss Count: 0");
-        m_miss_rate.setText("Miss Rate: 0");
+        m_total.setText("Total          : 0");
+        m_miss_rate.setText("Miss Rate   : 0.000");
 
         m_cache_board.updateUI();
     }
