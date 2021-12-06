@@ -5,34 +5,39 @@ import java.util.Random;
 
 public class MainMemoryModel {
     private int m_main_memory_size;
-    private ArrayList<Integer> m_data;
-    private ArrayList<String> m_instruction;
+    private ArrayList<String> m_data;
+    private ArrayList<String> m_inst;
 
     public MainMemoryModel(int main_memory_size) {
         m_main_memory_size = main_memory_size;
         m_data = new ArrayList<>();
-        m_instruction = new ArrayList<>();
+        m_inst = new ArrayList<>();
 
         Random r = new Random();
         for (int i = 0; i < m_main_memory_size; i++) {
-            m_data.add(r.nextInt(256));
+            m_data.add(Integer.toBinaryString(r.nextInt(256)));
         }
 
-        m_instruction.add("l 1234");
-        m_instruction.add("l 1234");
-        m_instruction.add("l 1234");
-        m_instruction.add("l 1234");
-        m_instruction.add("l 1234");
-        m_instruction.add("s 1234");
-        m_instruction.add("s 1234");
-        m_instruction.add("s 1234");
-        m_instruction.add("s 1234");
-        m_instruction.add("s 1234");
-        m_instruction.add("beq 1234 5");
+        m_inst.add("lod 000");
+        m_inst.add("lod 001");
+        m_inst.add("lod 002");
+        m_inst.add("lod 003");
+        m_inst.add("lod 004");
+        m_inst.add("str 005");
+        m_inst.add("str 006");
+        m_inst.add("str 007");
+        m_inst.add("str 008");
+        m_inst.add("str 009");
+        m_inst.add("bne 000");
+        m_inst.add("lod 010");
+        m_inst.add("lod 011");
+        m_inst.add("lod 012");
+        m_inst.add("lod 013");
+        m_inst.add("lod 014");
     }
 
-    public ArrayList<Integer> loadData(int address, int block_size) {
-        ArrayList<Integer> data = new ArrayList<>();
+    public ArrayList<String> loadData(int address, int block_size) {
+        ArrayList<String> data = new ArrayList<>();
         int block_address = address / block_size;
         for (int i = 0; i < block_size; ++i) {
             data.add(m_data.get(block_address * block_size + i));
@@ -41,27 +46,11 @@ public class MainMemoryModel {
     }
 
     public ArrayList<String> loadInst(int address, int block_size) {
-        ArrayList<String> instructions = new ArrayList<>();
+        ArrayList<String> inst = new ArrayList<>();
         int block_address = address / block_size;
         for (int i = 0; i < block_size; ++i) {
-            instructions.add(m_instruction.get(block_address * block_size + i));
+            inst.add(m_inst.get(block_address * block_size + i));
         }
-        return instructions;
-    }
-
-    public void showData() {
-        for (int i = 0; i < m_data.size(); ++i)
-        {
-            if (i != 0 && i % 4 == 0)
-                System.out.printf(" ");
-
-            if (i != 0 && i % 16 == 0)
-                System.out.println("");
-
-            if (i % 4 == 0)
-                System.out.printf("0x");
-            System.out.printf("%02x", m_data.get(i));
-        }
-        System.out.println("");
+        return inst;
     }
 }

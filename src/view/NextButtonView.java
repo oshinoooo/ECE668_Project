@@ -30,7 +30,7 @@ public class NextButtonView {
     }
 
     public void update() {
-        currentPC.setText("Next PC: " + Integer.toBinaryString(cacheSimulatorSystem.getM_PC()));
+        currentPC.setText("Next PC: " + cacheSimulatorSystem.getM_PC());
     }
 
     public void reset() {

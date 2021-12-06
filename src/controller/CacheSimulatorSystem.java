@@ -6,6 +6,7 @@ import model.StatusModel;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
 
 public class CacheSimulatorSystem {
     private int m_PC;
@@ -59,19 +60,52 @@ public class CacheSimulatorSystem {
     }
 
     public void run() {
-        int tmp = m_PC++;
+        m_inst_status.setM_total_count(m_inst_status.getM_total_count() + 1);
+        int currentPC = m_PC++;
+        ArrayList<String> inst_data = m_inst_cache.searchCache(currentPC);
 
-        m_data_status.setM_total_count(m_data_status.getM_total_count() + 1);
-        if (!m_data_cache.searchCache(tmp)) {
-            m_data_status.setM_ifHit("Miss");
-            m_data_status.setM_miss_count(m_data_status.getM_miss_count() + 1);
-            m_data_cache.loadData(tmp);
+        if (!inst_data.isEmpty()) {
+            m_inst_status.setM_ifHit("Hit");
         }
         else {
-            m_data_status.setM_ifHit("Hit");
+            m_inst_status.setM_ifHit("Miss");
+            m_inst_status.setM_miss_count(m_inst_status.getM_miss_count() + 1);
+            inst_data = m_main_memory.loadInst(currentPC, m_block_size);
+            m_inst_cache.loadData(currentPC, inst_data);
         }
-        double tmp_miss_rate = (double)m_data_status.getM_miss_count() / (double)m_data_status.getM_total_count();
-        m_data_status.setM_miss_rate(tmp_miss_rate);
+        double inst_miss_rate = (double)m_inst_status.getM_miss_count() / (double)m_inst_status.getM_total_count();
+        m_inst_status.setM_miss_rate(inst_miss_rate);
+
+        String current_instruction_type = inst_data.get(currentPC % m_block_size).substring(0, 3);
+        if (current_instruction_type.equals("lod") || current_instruction_type.equals("str")) {
+            m_data_status.setM_total_count(m_data_status.getM_total_count() + 1);
+            int address = strToInt(inst_data.get(currentPC % m_block_size).substring(4, 7));
+            ArrayList<String> data_data = m_data_cache.searchCache(address);
+
+            if (!data_data.isEmpty()) {
+                m_data_status.setM_ifHit("Hit");
+            }
+            else {
+                m_data_status.setM_ifHit("Miss");
+                m_data_status.setM_miss_count(m_data_status.getM_miss_count() + 1);
+                data_data = m_main_memory.loadData(address, m_block_size);
+                m_data_cache.loadData(address, data_data);
+            }
+            double data_miss_rate = (double)m_data_status.getM_miss_count() / (double)m_data_status.getM_total_count();
+            m_data_status.setM_miss_rate(data_miss_rate);
+        }
+        else if (current_instruction_type.equals("bne")) {
+            m_PC = strToInt(inst_data.get(currentPC % m_block_size).substring(4, 7));
+        }
+    }
+
+    private int strToInt(String str) {
+        int out = 0;
+        for (int i = 0; i < str.length(); i++) {
+            out *= 10;
+            out += str.charAt(i) - '0';
+        }
+        return out;
     }
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {

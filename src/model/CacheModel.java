@@ -35,11 +35,13 @@ public class CacheModel {
 
         m_entries = new EntryModel[m_num_blocks];
         for (int i = 0; i < m_num_blocks; i++) {
-            m_entries[i] = new EntryModel(i / m_num_way, i % 2 + 1, i % 2 + 1);
+            m_entries[i] = new EntryModel(i / m_num_way, i % m_num_way + 1, i % m_num_way + 1);
         }
     }
 
-    public boolean searchCache(int address) {
+    public ArrayList<String> searchCache(int address) {
+        ArrayList<String> data = new ArrayList<>();
+
         int index_flag = 0;
         for (int i = 0; i < m_digit_index; i++) {
             index_flag <<= 1;
@@ -59,6 +61,7 @@ public class CacheModel {
 
         for (int i = 0; i < m_num_blocks; i++) {
             if (m_entries[i].getIndex() == index && m_entries[i].getTag() == tag && m_entries[i].getValid() == 1) {
+                data = m_entries[i].getM_data();
                 int max_time = 0;
                 for (int j = 0; j < m_num_blocks; j++) {
                     if (m_entries[j].getIndex() == index) {
@@ -66,13 +69,13 @@ public class CacheModel {
                     }
                 }
                 m_entries[i].setLastTime(max_time + 1);
-                return true;
+                return data;
             }
         }
-        return false;
+        return data;
     }
 
-    public void loadData(int address) {
+    public void loadData(int address, ArrayList<String> data) {
         int index_flag = 0;
         for (int i = 0; i < m_digit_index; i++) {
             index_flag <<= 1;
@@ -104,6 +107,7 @@ public class CacheModel {
         m_entries[min_index].setValid(1, m_changes);
         m_entries[min_index].setTag(tag, m_changes);
         m_entries[min_index].setLastTime(max_time + 1);
+        m_entries[min_index].setM_data(data);
     }
 
     public int getM_digit_index() {

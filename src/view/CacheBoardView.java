@@ -72,11 +72,11 @@ public class CacheBoardView {
     public void update() {
         StatusModel tmp_status;
         EntryModel[] entries;
-        if (m_boardName == "Data Cache") {
+        if (m_boardName.equals("Data Cache")) {
             tmp_status = m_cacheSimulatorSystem.getM_data_status();
             entries = m_cacheSimulatorSystem.getM_data_cache().getM_entries();
         }
-        else{
+        else {
             tmp_status = m_cacheSimulatorSystem.getM_inst_status();
             entries = m_cacheSimulatorSystem.getM_inst_cache().getM_entries();
         }

@@ -52,7 +52,7 @@ public class CacheSimulatorView implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if (evt.getPropertyName() == "DataCache" || evt.getPropertyName() == "InstCache") {
+        if (evt.getPropertyName().equals("DataCache") || evt.getPropertyName().equals("InstCache")) {
             reset();
         }
         else {
