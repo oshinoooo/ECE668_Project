@@ -118,19 +118,23 @@ public class CacheSimulatorSystem {
         return m_changes;
     }
 
-    public CacheModel getM_dataCache() {
-        return m_data_cache;
-    }
-
-    public CacheModel getM_instCache() {
-        return m_inst_cache;
-    }
-
     public StatusModel getM_data_status() {
         return m_data_status;
     }
 
     public StatusModel getM_inst_status() {
         return m_inst_status;
+    }
+
+    public CacheModel getM_data_cache() {
+        return m_data_cache;
+    }
+
+    public CacheModel getM_inst_cache() {
+        return m_inst_cache;
+    }
+
+    public MainMemoryModel getM_main_memory() {
+        return m_main_memory;
     }
 }

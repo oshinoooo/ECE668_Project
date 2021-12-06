@@ -74,11 +74,11 @@ public class CacheBoardView {
         EntryModel[] entries;
         if (m_boardName == "Data Cache") {
             tmp_status = m_cacheSimulatorSystem.getM_data_status();
-            entries = m_cacheSimulatorSystem.getM_dataCache().getM_entries();
+            entries = m_cacheSimulatorSystem.getM_data_cache().getM_entries();
         }
         else{
             tmp_status = m_cacheSimulatorSystem.getM_inst_status();
-            entries = m_cacheSimulatorSystem.getM_instCache().getM_entries();
+            entries = m_cacheSimulatorSystem.getM_inst_cache().getM_entries();
         }
 
         // hit
@@ -98,7 +98,7 @@ public class CacheBoardView {
         for (int i = 0; i < num_blocks; i++) {
             // tag
             String tag = Integer.toBinaryString(entries[i].getTag());
-            int digit_tag = m_cacheSimulatorSystem.getM_dataCache().getM_digit_tag();
+            int digit_tag = m_cacheSimulatorSystem.getM_data_cache().getM_digit_tag();
             if (tag.length() < digit_tag) {
                 String prefix = "";
                 for (int j = 0; j < digit_tag - tag.length(); j++) {
@@ -141,7 +141,7 @@ public class CacheBoardView {
             if (cache_size != block_size * num_way) {
                 String prefix = "";
                 index = Integer.toBinaryString(i / num_way);
-                int digit_index = m_cacheSimulatorSystem.getM_dataCache().getM_digit_index();
+                int digit_index = m_cacheSimulatorSystem.getM_data_cache().getM_digit_index();
                 if (index.length() < digit_index) {
                     for (int j = 0; j < digit_index - index.length(); j++) {
                         prefix += "0";
@@ -156,7 +156,7 @@ public class CacheBoardView {
 
             // tag
             String tag = "";
-            for (int j = 0; j < m_cacheSimulatorSystem.getM_dataCache().getM_digit_tag(); j++) {
+            for (int j = 0; j < m_cacheSimulatorSystem.getM_data_cache().getM_digit_tag(); j++) {
                 tag += "0";
             }
             entry.add(tag);
