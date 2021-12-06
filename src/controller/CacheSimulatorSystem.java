@@ -39,7 +39,7 @@ public class CacheSimulatorSystem {
 
         m_data_cache = new CacheModel(m_main_memory_size, m_cache_size, m_block_size, m_num_way, m_changes);
         m_inst_cache = new CacheModel(m_main_memory_size, m_cache_size, m_block_size, m_num_way, m_changes);
-        m_main_memory = new MainMemoryModel(m_main_memory_size, m_block_size);
+        m_main_memory = new MainMemoryModel(m_main_memory_size);
     }
 
     public void reset() {

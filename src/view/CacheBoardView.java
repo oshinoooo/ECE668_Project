@@ -25,8 +25,8 @@ public class CacheBoardView {
     private JTextArea m_miss_count;
     private JTextArea m_miss_rate;
 
-    Vector<String> Column;
-    Vector<Vector<String>> Row;
+    Vector<String> m_column;
+    Vector<Vector<String>> m_row;
 
     public CacheBoardView(String boardName, CacheSimulatorSystem cacheSimulatorSystem) {
         m_boardName = boardName;
@@ -34,46 +34,17 @@ public class CacheBoardView {
 
         m_cache_board = new JPanel(new BorderLayout());
 
-        Column = new Vector<>();
-        Column.add("Index");
-        Column.add("Way");
-        Column.add("Tag");
-        Column.add("Valid");
+        m_column = new Vector<>();
+        m_column.add("Index");
+        m_column.add("Way");
+        m_column.add("Tag");
+        m_column.add("Valid");
 
-        int cache_size = m_cacheSimulatorSystem.getM_cache_size();
-        int block_size = m_cacheSimulatorSystem.getM_block_size();
-        int num_blocks = cache_size / block_size;
-        Row = new Vector<>();
+        m_row = new Vector<>();
 
-        for (int i = 0; i < num_blocks; i++) {
-            Vector<String> tmp = new Vector<>();
-            // index
-            String tmp1 = Integer.toBinaryString(i / block_size);
-            String tmp2 = "";
-            int digit_index = m_cacheSimulatorSystem.getM_dataCache().getM_digit_index();
-            if (tmp1.length() < digit_index) {
-                for (int j = 0; j < digit_index - tmp1.length(); j++) {
-                    tmp2 += "0";
-                }
-            }
-            tmp.add(tmp2 + tmp1);
+        initialize();
 
-            // way
-            tmp.add(Integer.toString(i % block_size + 1));
-
-            // tag
-            String prefix = "";
-            for (int j = 0; j < m_cacheSimulatorSystem.getM_dataCache().getM_digit_tag(); j++) {
-                prefix += "0";
-            }
-            tmp.add(prefix);
-
-            // valid
-            tmp.add("0");
-
-            Row.add(tmp);
-        }
-        m_table = new JTable(Row, Column);
+        m_table = new JTable(m_row, m_column);
         DefaultTableCellRenderer cr = new DefaultTableCellRenderer();
         cr.setHorizontalAlignment(JLabel.CENTER);
         m_table.setDefaultRenderer(Object.class, cr);
@@ -126,67 +97,75 @@ public class CacheBoardView {
 
         for (int i = 0; i < num_blocks; i++) {
             // tag
-            String tmp = Integer.toBinaryString(entries[i].getTag());
+            String tag = Integer.toBinaryString(entries[i].getTag());
             int digit_tag = m_cacheSimulatorSystem.getM_dataCache().getM_digit_tag();
-            if (tmp.length() < digit_tag) {
-                String tmp2 = "";
-                for (int j = 0; j < digit_tag - tmp.length(); j++) {
-                    tmp2 += "0";
+            if (tag.length() < digit_tag) {
+                String prefix = "";
+                for (int j = 0; j < digit_tag - tag.length(); j++) {
+                    prefix += "0";
                 }
-                Row.get(i).set(2, tmp2 + tmp);
+                tag = prefix + tag;
             }
-            else {
-                Row.get(i).set(2, tmp);
-            }
+            m_row.get(i).set(2, tag);
 
             // valid
-            Row.get(i).set(3, Integer.toBinaryString(entries[i].getValid()));
+            m_row.get(i).set(3, Integer.toBinaryString(entries[i].getValid()));
         }
 
         m_cache_board.updateUI();
     }
 
     public void reset() {
+        m_row.clear();
+
+        initialize();
+
         m_ifHit.setText("Miss/Hit");
         m_miss_count.setText("Miss Count: 0");
         m_miss_rate.setText("Miss Rate: 0");
 
+        m_cache_board.updateUI();
+    }
+
+    private void initialize() {
         int cache_size = m_cacheSimulatorSystem.getM_cache_size();
         int block_size = m_cacheSimulatorSystem.getM_block_size();
+        int num_way = m_cacheSimulatorSystem.getM_num_way();
         int num_blocks = cache_size / block_size;
 
-        Row.clear();
-
         for (int i = 0; i < num_blocks; i++) {
-            Vector<String> tmp = new Vector<>();
+            Vector<String> entry = new Vector<>();
+
             // index
-            String tmp1 = Integer.toBinaryString(i / block_size);
-            String tmp2 = "";
-            int digit_index = m_cacheSimulatorSystem.getM_dataCache().getM_digit_index();
-            if (tmp1.length() < digit_index) {
-                for (int j = 0; j < digit_index - tmp1.length(); j++) {
-                    tmp2 += "0";
+            String index = "";
+            if (cache_size != block_size * num_way) {
+                String prefix = "";
+                index = Integer.toBinaryString(i / num_way);
+                int digit_index = m_cacheSimulatorSystem.getM_dataCache().getM_digit_index();
+                if (index.length() < digit_index) {
+                    for (int j = 0; j < digit_index - index.length(); j++) {
+                        prefix += "0";
+                    }
                 }
+                index = prefix + index;
             }
-            tmp.add(tmp2 + tmp1);
+            entry.add(index);
 
             // way
-            tmp.add(Integer.toString(i % block_size + 1));
+            entry.add(Integer.toString(i % num_way + 1));
 
             // tag
-            String prefix = "";
+            String tag = "";
             for (int j = 0; j < m_cacheSimulatorSystem.getM_dataCache().getM_digit_tag(); j++) {
-                prefix += "0";
+                tag += "0";
             }
-            tmp.add(prefix);
+            entry.add(tag);
 
             // valid
-            tmp.add("0");
+            entry.add("0");
 
-            Row.add(tmp);
+            m_row.add(entry);
         }
-
-        m_cache_board.updateUI();
     }
 
     public JPanel getM_cache_board() {

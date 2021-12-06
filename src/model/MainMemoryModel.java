@@ -5,13 +5,11 @@ import java.util.Random;
 
 public class MainMemoryModel {
     private int m_main_memory_size;
-    private int m_block_size;
     private ArrayList<Integer> m_data;
     private ArrayList<String> m_instruction;
 
-    public MainMemoryModel(int main_memory_size, int block_size) {
+    public MainMemoryModel(int main_memory_size) {
         m_main_memory_size = main_memory_size;
-        m_block_size = block_size;
         m_data = new ArrayList<>();
         m_instruction = new ArrayList<>();
 
@@ -25,7 +23,6 @@ public class MainMemoryModel {
         m_instruction.add("l 1234");
         m_instruction.add("l 1234");
         m_instruction.add("l 1234");
-
         m_instruction.add("s 1234");
         m_instruction.add("s 1234");
         m_instruction.add("s 1234");
@@ -34,15 +31,22 @@ public class MainMemoryModel {
         m_instruction.add("beq 1234 5");
     }
 
-    public ArrayList<Integer> loadData(int address) {
+    public ArrayList<Integer> loadData(int address, int block_size) {
         ArrayList<Integer> data = new ArrayList<>();
-        int block_address = address / m_block_size;
-
-        for (int i = 0; i < m_block_size; ++i) {
-            data.add(m_data.get(block_address * m_block_size + i));
+        int block_address = address / block_size;
+        for (int i = 0; i < block_size; ++i) {
+            data.add(m_data.get(block_address * block_size + i));
         }
-
         return data;
+    }
+
+    public ArrayList<String> loadInst(int address, int block_size) {
+        ArrayList<String> instructions = new ArrayList<>();
+        int block_address = address / block_size;
+        for (int i = 0; i < block_size; ++i) {
+            instructions.add(m_instruction.get(block_address * block_size + i));
+        }
+        return instructions;
     }
 
     public void showData() {
