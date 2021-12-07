@@ -14,6 +14,8 @@ public class CacheBoardView {
     private String m_boardName;
     private CacheSimulatorSystem m_cacheSimulatorSystem;
 
+    private Font m_font;
+
     private JPanel m_cache_board;
     private JTable m_table;
 
@@ -37,6 +39,8 @@ public class CacheBoardView {
         m_boardName = boardName;
         m_cacheSimulatorSystem = cacheSimulatorSystem;
 
+        m_font = new Font("Menu.font", Font.PLAIN, 15);
+
         m_cache_board = new JPanel(new BorderLayout());
 
         m_column = new Vector<>();
@@ -54,6 +58,7 @@ public class CacheBoardView {
         cr.setHorizontalAlignment(JLabel.CENTER);
         m_table.setDefaultRenderer(Object.class, cr);
         m_table.getTableHeader().setDefaultRenderer(cr);
+        m_table.setFont(m_font);
 
         // info
         m_info = new JPanel(new FlowLayout());
@@ -62,14 +67,19 @@ public class CacheBoardView {
         m_left_info = new JPanel(new BorderLayout());
         m_label = new JTextArea(boardName);
         m_ifHit = new JTextArea("Miss/Hit");
+        m_label.setFont(m_font);
+        m_ifHit.setFont(m_font);
         m_left_info.add(m_label, BorderLayout.NORTH);
         m_left_info.add(m_ifHit, BorderLayout.SOUTH);
 
         // right
         m_right_info = new JPanel(new BorderLayout());
         m_miss_count = new JTextArea("Miss Count: 0");
+        m_miss_count.setFont(m_font);
         m_total      = new JTextArea("Total          : 0");
+        m_total.setFont(m_font);
         m_miss_rate  = new JTextArea("Miss Rate   : 0.000");
+        m_miss_rate.setFont(m_font);
         m_right_info.add(m_miss_count, BorderLayout.NORTH);
         m_right_info.add(m_total, BorderLayout.CENTER);
         m_right_info.add(m_miss_rate, BorderLayout.SOUTH);
