@@ -18,29 +18,29 @@ public class MainMemoryModel {
             m_data.add(Integer.toBinaryString(r.nextInt(256)));
         }
 
-        m_inst.add("lod 000");
-        m_inst.add("lod 001");
+        m_inst.add("lod 080");
+        m_inst.add("lod 081");
         m_inst.add("add");
         m_inst.add("add");
 
         m_inst.add("sub");
-        m_inst.add("lod 002");
-        m_inst.add("lod 003");
-        m_inst.add("lod 004");
+        m_inst.add("lod 152");
+        m_inst.add("lod 153");
+        m_inst.add("lod 154");
 
         m_inst.add("sub");
-        m_inst.add("str 005");
-        m_inst.add("str 006");
+        m_inst.add("str 085");
+        m_inst.add("str 086");
         m_inst.add("div");
 
         m_inst.add("mul");
-        m_inst.add("str 007");
-        m_inst.add("str 008");
-        m_inst.add("str 009");
+        m_inst.add("str 107");
+        m_inst.add("str 108");
+        m_inst.add("str 109");
 
         m_inst.add("add");
-        m_inst.add("lod 010");
-        m_inst.add("lod 011");
+        m_inst.add("lod 220");
+        m_inst.add("lod 221");
         m_inst.add("mul");
 
         m_inst.add("div");
