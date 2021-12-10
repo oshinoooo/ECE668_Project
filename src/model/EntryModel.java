@@ -9,7 +9,7 @@ public class EntryModel {
     private int tag;
     private int valid;
     private int lastTime;
-    private ArrayList<String> m_data;
+    private ArrayList<String> data;
 
     public EntryModel(int index, int way, int lastTime) {
         this.index = index;
@@ -17,7 +17,7 @@ public class EntryModel {
         this.tag = 0;
         this.valid = 0;
         this.lastTime = lastTime;
-        this.m_data = new ArrayList<>();
+        this.data = new ArrayList<>();
     }
 
     public void setTag(int tag, PropertyChangeSupport changes) {
@@ -36,8 +36,8 @@ public class EntryModel {
         this.lastTime = lastTime;
     }
 
-    public void setM_data(ArrayList<String> m_data) {
-        this.m_data = m_data;
+    public void setData(ArrayList<String> data) {
+        this.data = data;
     }
 
     public int getIndex() {
@@ -60,7 +60,7 @@ public class EntryModel {
         return lastTime;
     }
 
-    public ArrayList<String> getM_data() {
-        return m_data;
+    public ArrayList<String> getData() {
+        return data;
     }
 }

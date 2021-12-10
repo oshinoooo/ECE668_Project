@@ -61,7 +61,7 @@ public class CacheModel {
 
         for (int i = 0; i < m_num_blocks; i++) {
             if (m_entries[i].getIndex() == index && m_entries[i].getTag() == tag && m_entries[i].getValid() == 1) {
-                data = m_entries[i].getM_data();
+                data = m_entries[i].getData();
                 int max_time = 0;
                 for (int j = 0; j < m_num_blocks; j++) {
                     if (m_entries[j].getIndex() == index) {
@@ -107,7 +107,7 @@ public class CacheModel {
         m_entries[min_index].setValid(1, m_changes);
         m_entries[min_index].setTag(tag, m_changes);
         m_entries[min_index].setLastTime(max_time + 1);
-        m_entries[min_index].setM_data(data);
+        m_entries[min_index].setData(data);
     }
 
     public int getM_digit_index() {
